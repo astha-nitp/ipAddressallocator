@@ -35,4 +35,8 @@ public class IPAddressAllocationController {
 		return "HeartBeat Updated.";
 	}
 	
+	@GetMapping(value="/addresses")
+	public List<HeartBeat> getMapping(){
+		return allocationService.getAllMapping();
+	}
 }

@@ -1,23 +1,25 @@
 package com.codingExcercise.service;
 
-import org.springframework.cache.annotation.CachePut;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.codingExcercise.cache.CacheConfig;
+import com.codingExcercise.model.IpAddress;
 
 @Service
-public class HeartBeatService{
+public class HeartBeatService {
 
-//	@Autowired
-//	private AllocationService allocationervice;
-//	
-	
-	@CachePut(cacheNames=CacheConfig.CACHE,key="{#macAddress}")
+	@Autowired
+	private AllocationService allocationervice;
+
 	public Boolean refresh(String macAddress, String allcatedIpAddress) {
 
-		return true;
+		IpAddress ip = allocationervice.getCache().asMap().get(macAddress);
+		if (ip != null) {
+			ip.setIpAddress(allcatedIpAddress);
+			allocationervice.getCache().put(macAddress, ip);
+			return true;
+		}
+		return false;
 	}
-
-	
 
 }
